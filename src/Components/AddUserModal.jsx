@@ -6,10 +6,10 @@ import { set } from 'date-fns';
 const AddUserModal = ({ onClose, onSubmit, initialData }) => {
   const isEditMode = Boolean(initialData);
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [Email, setEmail] = useState('');
+  const [Password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [role, setRole] = useState('starer');
+  const [Role, setRole] = useState('starer');
   const [status, setStatus] = useState('Active');
   const [isLocked, setIsLocked] = useState(false);
 
@@ -17,12 +17,15 @@ const AddUserModal = ({ onClose, onSubmit, initialData }) => {
   useEffect(() => {
     if (isEditMode) {
       // Chế độ Sửa: điền dữ liệu có sẵn
-      setEmail(initialData.email);
-      setRole(initialData.role);
+      setEmail(initialData.Email);
+      setRole(initialData.Role);
       if (initialData.isLocked) {
-        setStatus('Banned');
-      } else {
         setStatus('Active');
+        setIsLocked(true);
+
+      } else {
+        setStatus('Banned');
+        setIsLocked(false);
       }
 
       setPassword(''); // Mật khẩu luôn trống khi sửa
@@ -37,17 +40,17 @@ const AddUserModal = ({ onClose, onSubmit, initialData }) => {
   }, [initialData, isEditMode]);
 
   const handleSave = () => {
-    if (!email) {
+    if (!Email) {
       alert('Email cannot be empty.');
       return;
     }
-    if (!isEditMode && !password) {
+    if (!isEditMode && !Password) {
       alert('Password cannot be empty for a new user.');
       return;
     }
 
 
-    onSubmit({ email, role, isLocked, password });
+    onSubmit({ Email, Role, isLocked, Password });
   };
 
 
@@ -81,7 +84,7 @@ const AddUserModal = ({ onClose, onSubmit, initialData }) => {
         </h2>
 
         <div className="grid grid-cols-2 gap-4 mb-4">
-          <select value={role} onChange={(e) => setRole(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <select value={Role} onChange={(e) => setRole(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
             <option value="starer">Starer</option>
             <option value="admin">Admin</option>
             <option value="handle report">Handle Report</option>
@@ -97,7 +100,7 @@ const AddUserModal = ({ onClose, onSubmit, initialData }) => {
           <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
           <input
             type="email"
-            value={email}
+            value={Email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="johndoe@mail.com"
             className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${isEditMode ? 'bg-gray-200 cursor-not-allowed' : ''}`}
@@ -112,7 +115,8 @@ const AddUserModal = ({ onClose, onSubmit, initialData }) => {
           </label>
           <input
             type={showPassword ? 'text' : 'password'}
-            value={password}
+            value={Password}
+            autoComplete="off"
             onChange={(e) => setPassword(e.target.value)}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />

@@ -3,7 +3,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 
-const port = process.env.PORT || 3000;
+const port = process.env.port || 3000;
 // const { GetPrimaryDBPool, GetnotificationDBPool } = require('./src/Config/SqlConnection');
 // const { client ,clientConnection} = require('./src/Config/Redis');
 app.use(cors());
@@ -20,6 +20,7 @@ app.use('/login', require('./src/Route/Login'));
 app.use('/admin', require('./src/Admin/GetAllUser'));
 app.use('/admin', require('./src/Admin/InsertUser'));
 app.use('/admin', require('./src/Admin/DeleteUser'));
+app.use('/admin', require('./src/Admin/UpdateUser'));
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

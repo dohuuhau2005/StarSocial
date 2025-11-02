@@ -11,7 +11,7 @@ import Saved from './Components/Saved';
 import CreatePost from './Components/CreatePost';
 import Profile from './Components/Profile';
 import Editprofile from './Components/Editprofile';
-import Notification from './Components/notification';
+import Notification from './Components/Notification';
 import EditPostPage from './Components/EditPostPage';
 import ChatSettings from './Components/ChatModal';
 

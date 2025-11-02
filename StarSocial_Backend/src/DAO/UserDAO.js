@@ -66,6 +66,46 @@ const UserDao = {
         } catch (err) {
             throw err;
         }
+    },
+    updateUser: async (Email, Role, hashedPassword, isLocked) => {
+        try {
+            const pool = await db.GetPrimaryDBPool();
+            const request = pool.request();
+            request.input('Email', sql.VarChar, Email);
+            request.input('Role', sql.VarChar, Role);
+            request.input('Password', sql.NVarChar, hashedPassword);
+            request.input('isLocked', sql.Bit, isLocked);
+            const sqlQuery = `
+        UPDATE Users
+        SET Role = @Role,
+            Password = @Password,
+            isLocked = @isLocked
+        WHERE Email = @Email
+    `;
+            await request.query(sqlQuery);
+            console.log(`User ${Email} updated successfully`);
+        } catch (err) {
+            throw err;
+        }
+    },
+    updateUserNoPassword: async (Email, Role, isLocked) => {
+        try {
+            const pool = await db.GetPrimaryDBPool();
+            const request = pool.request();
+            request.input('Email', sql.VarChar, Email);
+            request.input('Role', sql.VarChar, Role);
+            request.input('isLocked', sql.Bit, isLocked);
+            const sqlQuery = `
+        UPDATE Users
+        SET Role = @Role,
+            isLocked = @isLocked
+        WHERE Email = @Email
+    `;
+            await request.query(sqlQuery);
+            console.log(`User ${Email} updated successfully`);
+        } catch (err) {
+            throw err;
+        }
     }
 }
 module.exports = UserDao;

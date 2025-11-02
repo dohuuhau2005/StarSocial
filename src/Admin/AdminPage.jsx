@@ -82,6 +82,7 @@ const Header = ({ searchTerm, setSearchTerm, onOpenModal }) => {
           type="text"
           placeholder="Search by email"
           value={searchTerm}
+          autoComplete="off"
           onChange={(e) => setSearchTerm(e.target.value)}
           className="pl-10 pr-4 py-2 w-full bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
@@ -229,10 +230,45 @@ const AdminPage = () => {
   };
 
   const handleSaveUser = (userData) => {
+    const token = localStorage.getItem('token');
+    const specialCharsRegex = /[^a-zA-Z0-9]/;
     if (editingUser) {
       setUsers(users.map(user => {
         if (user.Email === editingUser.Email) {
+          if (userData.Role == user.Role && userData.isLocked == user.isLocked && userData.Password == "") {
+            alert("No changes detected. User not updated.");
+            return user;
+          }
+          if (specialCharsRegex.test(userData.Password)) {
+            alert("Password cannot contain special characters.");
+            return user;
+          }
+          let changed = false;
+          if (userData.Password) {
+            alert("User updated successfully."); changed = true;
+            axios.put(`${backendLink}/admin/updateUser/${user.Email}`, userData, {
+              headers: {
+                'authorization': `${localStorage.getItem('token')}` // Kẹp vé vào
+              }
+            }).catch(error => {
+              console.error("Error updating user in backend:", error.response?.data?.error || error.message);
+
+            });
+          } else {
+            alert("User updated successfully without changing password."); changed = false;
+            axios.put(`${backendLink}/admin/updateUserNoPassword/${user.Email}`, userData, {
+              headers: {
+                'authorization': `${localStorage.getItem('token')}` // Kẹp vé vào
+              }
+            }).catch(error => {
+              console.error("Error updating user in backend:", error.response?.data?.error || error.message);
+
+            });
+          };
           const newPassword = userData.Password ? userData.Password : user.Password;
+          console.log("Updated user data:", { userData, Password: newPassword });
+          console.log("Password changed:", changed);
+
           return { ...user, ...userData, Password: newPassword };
         }
         return user;
@@ -242,7 +278,7 @@ const AdminPage = () => {
         ...userData,
 
       };
-      const token = localStorage.getItem('token');
+
       axios.post(`${backendLink}/admin/insertUsers`, newUser, {
         headers: {
           'authorization': `${token}` // Kẹp vé vào
