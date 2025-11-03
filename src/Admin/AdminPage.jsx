@@ -10,6 +10,7 @@ import AddUserModal from '../Components/AddUserModal';
 import { AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 import { ca, tr } from 'date-fns/locale';
+import { u } from 'framer-motion/client';
 
 
 // Initial dummy user data to match PostgreSQL structure status
@@ -278,8 +279,8 @@ const AdminPage = () => {
         ...userData,
 
       };
-
-      axios.post(`${backendLink}/admin/insertUsers`, newUser, {
+      console.log("Adding new user data:", userData);
+      axios.post(`${backendLink}/admin/insertUsers`, userData, {
         headers: {
           'authorization': `${token}` // Kẹp vé vào
         }

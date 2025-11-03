@@ -55,7 +55,7 @@ const App = () => {
       {/* Report handler routes */}
       <Route
         element={
-          <ProtectedRoute allowedRoles={['admin', 'handlereport']}>
+          <ProtectedRoute allowedRoles={['admin', 'handle report']}>
             <ReportLayout />
           </ProtectedRoute>
         }

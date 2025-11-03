@@ -9,13 +9,13 @@ const crypto = require('crypto');
 const { ulid } = require('ulid');
 const verifyToken = require('../Middlewares/verifyToken');
 router.post('/insertUsers', verifyToken, async (req, res) => {
-    const { email, password, role, isLocked } = req.body;
+    const { Email, Password, Role, isLocked } = req.body;
     const id = ulid();
     const salt = Math.floor(Math.random() * 0xFFFFFF).toString(16).padStart(6, '0');
-    const passWithSalt = password + salt;
-    console.log("Insert user with email: ", email);
+    const passWithSalt = Password + salt;
+    console.log("Insert user with email: ", Email);
     console.log("Generated salt: ", salt);
-    console.log("Password with salt: ", password);
+    console.log("Password with salt: ", Password);
     console.log("Password with salt: ", passWithSalt);
 
     // 1. Hash mật khẩu
@@ -24,11 +24,11 @@ router.post('/insertUsers', verifyToken, async (req, res) => {
     const newUser = new User({
         User_id: id,
         Last_name: "abc",
-        Email: email,
+        Email: Email,
         First_Name: "abc",
         Password: hashedPassword,
         Salt: salt,
-        Role: role,
+        Role: Role,
         Date_Of_Birth: null,
         Profile_Picture: null,
         Description: null,

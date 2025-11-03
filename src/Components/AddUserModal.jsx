@@ -48,7 +48,7 @@ const AddUserModal = ({ onClose, onSubmit, initialData }) => {
       alert('Password cannot be empty for a new user.');
       return;
     }
-
+    console.log({ Email, Role, isLocked, Password });
 
     onSubmit({ Email, Role, isLocked, Password });
   };
